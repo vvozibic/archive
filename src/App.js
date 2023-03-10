@@ -135,7 +135,8 @@ export default function App() {
 
   return (
     <div className="App">
-      <h1>{data.length ? "Список пластинок" : "Загрузка..."}</h1>
+      <div className="logo"><Image id="logo.jpg" /></div>
+      <h1>{!data.length && "Загрузка..."}</h1>
       <input placeholder="Поиск" value={search} onChange={e => setSearch(e.target.value)} />
       <div className="flex">
         {data.filter(i => i.C?.toLowerCase().includes(search?.toLowerCase()) || i.B?.toLowerCase().includes(search?.toLowerCase())).map((item) => (
