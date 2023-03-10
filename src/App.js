@@ -141,7 +141,7 @@ export default function App() {
         {data.filter(i => i.C?.toLowerCase().includes(search?.toLowerCase()) || i.B?.toLowerCase().includes(search?.toLowerCase())).map((item) => (
           <div>
             <Image id={item.A} />
-            <h3>{item.C} – {item.B}</h3>
+            <h3>{item.B} – {item.C}</h3>
             {/* <div>Альбом: <b> </b></div>
             <div>Исполнитель: <b> </b></div> */}
             {/* <div>Жанр: {item.D}</div> */}
