@@ -147,8 +147,6 @@ export default function App() {
             {/* <div>Жанр: {item.D}</div> */}
             <br />
             <br />
-            <br />
-            <br />
             <div>Цена: {item.D} ₽</div>
             {/* <div>Состояние: {item.H}</div> */}
             {/* <div>Год: {item.K}</div> */}
