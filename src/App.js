@@ -149,7 +149,7 @@ export default function App() {
             <br />
             <br />
             <br />
-            <div>Цена: {item.E} ₽</div>
+            <div>Цена: {item.D} ₽</div>
             {/* <div>Состояние: {item.H}</div> */}
             {/* <div>Год: {item.K}</div> */}
             {/* <div>Лейбл: {item.M}</div> */}
