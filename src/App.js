@@ -1,11 +1,63 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+const useImage = (id) => {
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [image, setImage] = useState(null)
+
+    useEffect(() => {
+        const fetchImage = async () => {
+            try {
+                const response = await import(`./images/${id}.jpeg`) // change relative path to suit your needs
+                setImage(response.default)
+            } catch (err) {
+                setError(err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchImage()
+    }, [id])
+
+    return {
+        loading,
+        error,
+        image,
+    }
+}
+
+const Image = ({ id, alt, className, ...rest }) => {
+  const { loading, error, image } = useImage(id)
+
+  if (error) return <span>{alt}</span>
+
+  return (
+      <>
+          {loading ? (
+              <span>loading</span>
+          ) : (
+              <img
+                  className={`Image${
+                      className
+                          ? className.padStart(className.length + 1)
+                          : ''
+                  }`}
+                  src={image}
+                  alt={alt}
+                  {...rest}
+              />
+          )}
+      </>
+  )
+}
+
 async function getData() {
   // https://stackoverflow.com/questions/31765773/converting-google-visualization-query-result-into-javascript-array
   // https://developers.google.com/chart/interactive/docs/dev/implementing_data_source#responseformat
 
-  const spreadsheetId = "13uLS53VilSZjAdQIz7DXetmn-ktiOL_Zlk-6Ie17j_k",
+  const spreadsheetId = "1LHSC41Hr_5PjfhAhrTvhlWNToHXgcQI6",
     response = await fetch(
       `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json`
     ),
@@ -86,16 +138,22 @@ export default function App() {
       <h1>{data.length ? "Список пластинок" : "Загрузка..."}</h1>
       <input placeholder="Поиск" value={search} onChange={e => setSearch(e.target.value)} />
       <div className="flex">
-        {data.filter(i => i.C?.includes(search) || i.B?.includes(search)).map((item) => (
+        {data.filter(i => i.C?.toLowerCase().includes(search?.toLowerCase()) || i.B?.toLowerCase().includes(search?.toLowerCase())).map((item) => (
           <div>
-            <div>Альбом: <b> {item.C}</b></div>
-            <div>Исполнитель: <b> {item.B}</b></div>
-            <div>Жанр: {item.D}</div>
-            <div>Цена: {item.E}</div>
-            <div>Состояние: {item.H}</div>
-            <div>Год: {item.K}</div>
-            <div>Лейбл: {item.M}</div>
-            <div>Страна: {item.N}</div>
+            <Image id={item.A} />
+            <h3>{item.C} – {item.B}</h3>
+            {/* <div>Альбом: <b> </b></div>
+            <div>Исполнитель: <b> </b></div> */}
+            {/* <div>Жанр: {item.D}</div> */}
+            <br />
+            <br />
+            <br />
+            <br />
+            <div>Цена: {item.E} ₽</div>
+            {/* <div>Состояние: {item.H}</div> */}
+            {/* <div>Год: {item.K}</div> */}
+            {/* <div>Лейбл: {item.M}</div> */}
+            {/* <div>Страна: {item.N}</div> */}
           </div>
         ))}
       </div>

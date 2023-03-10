@@ -8,7 +8,9 @@
 input {
   width: 50%;
   margin: 0 auto 50px 0;
-  padding: 12px
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
 }
 
 .App-logo {
@@ -54,17 +56,22 @@ input {
 
 .flex {
   display: flex;
-  align-items: start;
+  align-items: stretch;
   justify-content: flex-start;
   gap: 20px;
   flex-wrap: wrap;
 }
 
 .flex > div {
-  padding: 12px;
-  width: calc(25% - 45px);
-  border: 1px solid grey;
-  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 18px;
+  min-height: 200px;
+  width: calc(25% - 55px);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  box-shadow: 1px 2px 10px -5px #282c34;
 }
 
 .flex > div > div {
