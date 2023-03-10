@@ -9,7 +9,7 @@ const useImage = (id) => {
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const response = await import(`./images/${id}.jpeg`) // change relative path to suit your needs
+                const response = await import(`./images/${id}`) // change relative path to suit your needs
                 setImage(response.default)
             } catch (err) {
                 setError(err)
@@ -140,7 +140,7 @@ export default function App() {
       <div className="flex">
         {data.filter(i => i.C?.toLowerCase().includes(search?.toLowerCase()) || i.B?.toLowerCase().includes(search?.toLowerCase())).map((item) => (
           <div>
-            <Image id={item.A} />
+            <Image id={`${item.A}.jpeg`} />
             <h3>{item.B} – {item.C}</h3>
             {/* <div>Альбом: <b> </b></div>
             <div>Исполнитель: <b> </b></div> */}
@@ -155,6 +155,8 @@ export default function App() {
           </div>
         ))}
       </div>
+
+      <a className="tg-btn" href="https://t.me/archive_vinyl" target="_blank" rel="noreferrer"><Image id="telegram.png" /></a>
     </div>
   );
 }
