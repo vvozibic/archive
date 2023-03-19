@@ -45,6 +45,7 @@ const Image = ({ id, alt, className, ...rest }) => {
                           : ''
                   }`}
                   src={image}
+                  lazy="true"
                   alt={alt}
                   {...rest}
               />
@@ -69,52 +70,17 @@ async function getData() {
       )
     );
 
-  // console.log(json);
-
-  // `table.cols` element contains headings
-  // we will use them to build our data array
   const headings = json.table.cols.map((item) => item.id);
 
-  console.log(json, headings);
-
-  // console.log(headings);
-
-  // data of each row is associated to the headings
   let data = json.table.rows.map((item) => {
-    // console.log(item);
     let row = {};
     item.c.forEach((cell, idx) => {
-      // console.log(cell)
       row[headings[idx]] = cell?.v;
     });
-    // console.log(row)
     return row;
   });
 
   data = data.filter((o) => o.A && o.B);
-
-  // filtering and sorting
-  // data = data.filter(item => item.Publish === true);
-  // data.sort((a, b) => a.CategoryOrder > b.CategoryOrder);
-
-  // console.log(data);
-
-  /*
-    Fields:
-    -------------------
-    Category
-    Name
-    Description
-    Price
-    Publish
-    CategoryOrder
-    CategoryTranslation
-  */
-
-  // aggregating data by category
-  // data = [...new Set(data.map(item => item.CategoryOrder))].map(categoryIndex => {
-  //   return data.filter(item => item.CategoryOrder === categoryIndex);
-  // });
 
   return data;
 }
@@ -143,16 +109,10 @@ export default function App() {
           <div>
             <Image id={`${item.A}.jpeg`} />
             <h3>{item.B} – {item.C}</h3>
-            {/* <div>Альбом: <b> </b></div>
-            <div>Исполнитель: <b> </b></div> */}
-            {/* <div>Жанр: {item.D}</div> */}
+            {item.N && <div>{item.N}</div>}
             <br />
             <br />
             <div>Цена: {item.D} ₽</div>
-            {/* <div>Состояние: {item.H}</div> */}
-            {/* <div>Год: {item.K}</div> */}
-            {/* <div>Лейбл: {item.M}</div> */}
-            {/* <div>Страна: {item.N}</div> */}
           </div>
         ))}
       </div>
