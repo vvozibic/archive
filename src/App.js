@@ -80,7 +80,7 @@ async function getData() {
     return row;
   });
 
-  data = data.filter((o) => o.A && o.B);
+  data = data.filter((o) => o.A && o.B && o.F > 0);
 
   return data;
 }
