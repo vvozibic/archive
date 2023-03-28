@@ -109,7 +109,7 @@ export default function App() {
           <div>
             <Image id={`${item.A}.jpeg`} />
             <h3>{item.B} – {item.C}</h3>
-            {item.N && <div>{item.N}</div>}
+            {item.O && <div>{item.O}</div>}
             <br />
             <br />
             <div>Цена: {item.D} ₽</div>
