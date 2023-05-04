@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { Routes, Route, createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
+
 
 const useImage = (id) => {
     const [loading, setLoading] = useState(true)
@@ -85,7 +87,7 @@ async function getData() {
   return data;
 }
 
-export default function App() {
+function Archive() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('')
 
@@ -120,4 +122,35 @@ export default function App() {
       <a className="tg-btn" href="https://t.me/archive_vinyl" target="_blank" rel="noreferrer"><Image id="telegram.png" /></a>
     </div>
   );
+}
+
+const Main = () => {
+  return (<>
+    <div className="logo"><Image id="logo.jpg" /></div>
+    <div className="cards">
+      <a href="/catalog"><div className="card catalog"><Image id="icon-main.png" /></div>Каталог</a>
+      <a href="https://t.me/archive_vinyl" target="_blank" rel="noreferrer"><div className="card tg"><Image id="icon-tg.png" /></div>Телеграмм</a>
+      <a href="/catalog" target="_blank"><div className="card inst"><Image id="icon-inst.png" /></div>Инстаграм</a>
+      <a href="/catalog" target="_blank"><div className="card yt"><Image id="icon-yt.png" /></div>Ютуб</a>
+    </div>
+  </>)
+}
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Main />,
+  },
+  {
+    path: "/catalog",
+    element: <Archive />
+  }
+]);
+
+export default function App () {
+  return (
+    <div className="App">
+      <RouterProvider router={router} />
+    </div>
+  )
 }
