@@ -63,8 +63,8 @@ input {
 .card {
   position: relative;
   padding: 40px;
-  width: 150px;
-  height: 150px;
+  width: 140px;
+  height: 140px;
   box-sizing: border-box;
   cursor: pointer;
   z-index: unset;
