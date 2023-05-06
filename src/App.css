@@ -49,27 +49,32 @@ input {
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 100px auto;
-  gap: 30px;
+  column-gap: 14px;
   max-width: 720px;
 }
 
 .cards a {
   text-decoration: none;
   color: #000;
-  line-height: 30px;
-  font-size: 16px;
+  line-height: 22px;
+  font-size: 13px;
 }
 
 .card {
   position: relative;
   padding: 40px;
-  width: 140px;
-  height: 140px;
+  width: 150px;
+  height: 150px;
   box-sizing: border-box;
   cursor: pointer;
   z-index: unset;
 }
 
+@media (max-width: 500px) {
+  .cards {
+    justify-content: center;
+  }
+}
 
 .card::before {
   position: absolute;
@@ -87,7 +92,7 @@ input {
 
 
 .card:hover::before {
-  transform: translateX(30px);
+  transform: translateX(8px);
   transition: all 0.5s;
 }
 
