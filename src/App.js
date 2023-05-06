@@ -129,7 +129,7 @@ const Main = () => {
     <div className="logo"><Image id="logo.jpg" /></div>
     <div className="cards">
       <a href="/catalog"><div className="card catalog"><Image id="icon-main.png" /></div>Каталог</a>
-      <a href="https://t.me/archive_vinyl" target="_blank" rel="noreferrer"><div className="card tg"><Image id="icon-tg.png" /></div>Телеграмм</a>
+      <a href="https://t.me/archive_vinylshop" target="_blank" rel="noreferrer"><div className="card tg"><Image id="icon-tg.png" /></div>Телеграмм</a>
       <a href="https://instagram.com/archive_shop" target="_blank" rel="noreferrer"><div className="card inst"><Image id="icon-inst.png" /></div>Инстаграм</a>
       <a><div className="card yt"><Image id="icon-yt.png" /></div>Ютуб</a>
     </div>
