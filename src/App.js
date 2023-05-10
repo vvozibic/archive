@@ -102,7 +102,7 @@ function Archive() {
   }, []);
 
   return (
-    <div className="App">
+    <>
       <div className="logo"><Image id="logo.jpg" /></div>
       <h1>{!data.length && "Загрузка..."}</h1>
       <input placeholder="Поиск" value={search} onChange={e => setSearch(e.target.value)} />
@@ -120,7 +120,7 @@ function Archive() {
       </div>
 
       <a className="tg-btn" href="https://t.me/archive_vinyl" target="_blank" rel="noreferrer"><Image id="telegram.png" /></a>
-    </div>
+    </>
   );
 }
 
