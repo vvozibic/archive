@@ -111,7 +111,7 @@ function Archive() {
           <div>
             <Image id={`${item.A}.jpeg`} />
             <h3>{item.B} – {item.C}</h3>
-            {item.O && <div>{item.G}</div>}
+            {item.H && <div>{item.H}</div>}
             <br />
             <br />
             <div>Цена: {item.D} ₽</div>
