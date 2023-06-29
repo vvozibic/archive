@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 
 
@@ -94,8 +94,8 @@ function Archive() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getData();
-      setData(data);
-      console.log(data);
+      setData(data.reverse());
+      // console.log(data);
     };
 
     fetchData();
