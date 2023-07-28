@@ -107,9 +107,10 @@ function Archive() {
       <div className="logo"><Image id="logo.jpg" /></div>
       <h1>{!data.length && "Загрузка..."}</h1>
       <input placeholder="Поиск" value={search} onChange={e => setSearch(e.target.value)} />
-      <div className="flex">
+
+      {/* <div className="flex">
         {data.filter(i => i.C?.toLowerCase().includes(search?.toLowerCase()) || i.B?.toLowerCase().includes(search?.toLowerCase())).map((item) => (
-          <div>
+          <div key={item.A}>
             <Image id={`${item.A}.jpeg`} />
             <h3>{item.B} – {item.C}</h3>
             {item.H && <div>{item.H}</div>}
@@ -118,7 +119,34 @@ function Archive() {
             <div>Цена: {item.D} ₽</div>
           </div>
         ))}
-      </div>
+      </div> */}
+
+      <section class="s-cards container">
+        <section class="s-cards__inner">
+          {data.filter(i => i.C?.toLowerCase().includes(search?.toLowerCase()) || i.B?.toLowerCase().includes(search?.toLowerCase())).map((item) => (
+            // <div key={item.A}>
+            //   <Image id={`${item.A}.jpeg`} />
+            //   <h3>{item.B} – {item.C}</h3>
+            //   {item.H && <div>{item.H}</div>}
+            //   <br />
+            //   <br />
+            //   <div>Цена: {item.D} ₽</div>
+            // </div>
+
+            <section class="s-card"  key={item.A}>
+              <Image id={`${item.A}.jpeg`} alt={`${item.B} – ${item.C}`} /> 
+              <h3 class="s-card__name">{item.B} – {item.C}</h3>
+              <p class="s-card__price">Цена: {item.D} ₽</p>
+              <div class="s-card__btns">
+                {/* <a href="./product.html" class="btn btn--clear-black">Подробнее</a> */}
+                {/* <button class="btn btn--fill">В корзину</button> */}
+              </div>
+            </section>
+          ))}
+        </section>
+        {/* <a class="btn btn--clear-black btn--fixed-width" href="./catalog.html">Показать ещё</a> */}
+
+      </section>
 
       <a className="tg-btn" href="https://t.me/archive_vinyl" target="_blank" rel="noreferrer"><Image id="telegram.png" /></a>
     </>
