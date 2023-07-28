@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import "./App.css";
 
 
@@ -131,7 +132,7 @@ const Main = () => {
       <a href="/catalog"><div className="card catalog"><Image id="icon-main.png" /></div>Каталог</a>
       <a href="https://t.me/archive_vinylshop" target="_blank" rel="noreferrer"><div className="card tg"><Image id="icon-tg.png" /></div>Телеграмм</a>
       <a href="https://instagram.com/archive_shop" target="_blank" rel="noreferrer"><div className="card inst"><Image id="icon-inst.png" /></div>Инстаграм</a>
-      <a><div className="card yt"><Image id="icon-yt.png" /></div>Ютуб</a>
+      <a href=""><div className="card yt"><Image id="icon-yt.png" /></div>Ютуб</a>
     </div>
   </>)
 }
@@ -151,6 +152,7 @@ export default function App () {
   return (
     <div className="App">
       <RouterProvider router={router} />
+      <Analytics />
     </div>
   )
 }
