@@ -61,7 +61,7 @@ async function getData() {
   // https://stackoverflow.com/questions/31765773/converting-google-visualization-query-result-into-javascript-array
   // https://developers.google.com/chart/interactive/docs/dev/implementing_data_source#responseformat
 
-  const spreadsheetId = "1LHSC41Hr_5PjfhAhrTvhlWNToHXgcQI6",
+  const spreadsheetId = "1yaVx1CHt-sJIO_BG4Jhp7qKOySTPrpZYWO1ira3UldU",
     response = await fetch(
       `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json`
     ),
@@ -83,7 +83,10 @@ async function getData() {
     return row;
   });
 
-  data = data.filter((o) => o.A && o.B && o.G > 0);
+  console.log(data);
+
+  // data = data.filter((o) => o.A && o.B && o.G > 0);
+  data = data.filter((o) => o.A && o.B);
 
   return data;
 }
