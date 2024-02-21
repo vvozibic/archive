@@ -83,8 +83,8 @@ async function getData() {
     return row;
   });
 
-  // data = data.filter((o) => o.A && o.B && o.G > 0);
-  data = data.filter((o) => o.A && o.B);
+  data = data.filter((o) => o.A && o.B && o.G > 0);
+  // data = data.filter((o) => o.A && o.B);
 
   return data;
 }
