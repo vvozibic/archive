@@ -1,6 +1,6 @@
+import { Analytics } from "@vercel/analytics/react";
 import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Analytics } from "@vercel/analytics/react";
 import "./App.css";
 
 
@@ -61,7 +61,7 @@ async function getData() {
   // https://stackoverflow.com/questions/31765773/converting-google-visualization-query-result-into-javascript-array
   // https://developers.google.com/chart/interactive/docs/dev/implementing_data_source#responseformat
 
-  const spreadsheetId = "1yaVx1CHt-sJIO_BG4Jhp7qKOySTPrpZYWO1ira3UldU",
+  const spreadsheetId = "1cLQI_6IneVqz9f-JiBCPKImOSwP3gQp1I8gq4bWZZU8",
     response = await fetch(
       `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json`
     ),
@@ -135,7 +135,7 @@ function Archive() {
             // </div>
 
             <section class="s-card"  key={item.A}>
-              <Image id={`${item.A}.jpeg`} alt={`${item.B} – ${item.C}`} /> 
+              <Image id={`${item.A}.jpeg`} alt={`${item.B} – ${item.C}`} loading="lazy" /> 
               <h3 class="s-card__name">{item.B} – {item.C}</h3>
               <p class="s-card__price">Цена: {item.D} ₽</p>
               <div class="s-card__btns">
