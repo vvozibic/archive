@@ -177,7 +177,7 @@ input {
 .flex > div > div {
   display: flex;
   flex-wrap: wrap;
-  align-items: start;
+  align-items: flex-start;
   justify-content: flex-start;
   text-align: left;
 }
