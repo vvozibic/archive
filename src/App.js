@@ -1,15 +1,17 @@
 import { Analytics } from "@vercel/analytics/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 
 
-const useImage = (id) => {
+const useImage = (id, shouldLoad = true) => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [image, setImage] = useState(null)
 
     useEffect(() => {
+        if (!shouldLoad) return;
+
         const fetchImage = async () => {
             try {
                 const response = await import(`./images/${id}`) // change relative path to suit your needs
@@ -22,7 +24,7 @@ const useImage = (id) => {
         }
 
         fetchImage()
-    }, [id])
+    }, [id, shouldLoad])
 
     return {
         loading,
@@ -31,15 +33,57 @@ const useImage = (id) => {
     }
 }
 
-const Image = ({ id, alt, className, ...rest }) => {
-  const { loading, error, image } = useImage(id)
+const Image = ({ id, alt, className, eager = false, ...rest }) => {
+  const [isInView, setIsInView] = useState(eager);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    // Если eager=true, загружаем сразу
+    if (eager) {
+      setIsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsInView(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { rootMargin: '50px' } // Начинаем загрузку за 50px до появления в viewport
+    );
+
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+
+    return () => {
+      if (imgRef.current) {
+        observer.disconnect();
+      }
+    };
+  }, [eager]);
+
+  const { loading, error, image } = useImage(id, isInView);
 
   if (error) return <span>{alt}</span>
 
   return (
-      <>
+      <div ref={imgRef} style={{ minHeight: loading ? '200px' : 'auto' }}>
           {loading ? (
-              <span>loading</span>
+              <div style={{ 
+                width: '100%', 
+                height: '200px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                background: '#f0f0f0'
+              }}>
+                <span>Загрузка...</span>
+              </div>
           ) : (
               <img
                   className={`Image${
@@ -48,12 +92,12 @@ const Image = ({ id, alt, className, ...rest }) => {
                           : ''
                   }`}
                   src={image}
-                  lazy="true"
+                  loading="lazy"
                   alt={alt}
                   {...rest}
               />
           )}
-      </>
+      </div>
   )
 }
 
@@ -91,77 +135,137 @@ async function getData() {
 
 function Archive() {
   const [data, setData] = useState([]);
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState('');
+  const [displayCount, setDisplayCount] = useState(20); // Начальное количество элементов
+  const [isLoading, setIsLoading] = useState(true);
+  const loadMoreRef = useRef(null);
+  const ITEMS_PER_PAGE = 20; // Количество элементов для загрузки за раз
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const data = await getData();
       setData(data.reverse());
-      // console.log(data);
+      setIsLoading(false);
     };
 
     fetchData();
   }, []);
 
+  // Фильтрация данных по поисковому запросу
+  const filteredData = data.filter(i => 
+    i.C?.toLowerCase().includes(search?.toLowerCase()) || 
+    i.B?.toLowerCase().includes(search?.toLowerCase())
+  );
+
+  // Сброс счетчика при изменении поиска
+  useEffect(() => {
+    setDisplayCount(ITEMS_PER_PAGE);
+  }, [search]);
+
+  // Отображаемые элементы
+  const displayedData = filteredData.slice(0, displayCount);
+  const hasMore = displayCount < filteredData.length;
+
+  // Intersection Observer для автолоадинга
+  useEffect(() => {
+    if (!hasMore || isLoading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setDisplayCount((prev) => {
+            const next = prev + ITEMS_PER_PAGE;
+            return Math.min(next, filteredData.length);
+          });
+        }
+      },
+      { rootMargin: '100px' } // Начинаем загрузку за 100px до конца
+    );
+
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.disconnect();
+      }
+    };
+  }, [hasMore, isLoading, filteredData.length]);
+
   return (
     <>
-      <div className="logo"><Image id="logo.jpg" /></div>
-      <h1>{!data.length && "Загрузка..."}</h1>
-      <input placeholder="Поиск" value={search} onChange={e => setSearch(e.target.value)} />
+      <div className="logo"><Image id="logo.jpg" eager /></div>
+      <h1>{isLoading && "Загрузка..."}</h1>
+      <input 
+        placeholder="Поиск" 
+        value={search} 
+        onChange={e => setSearch(e.target.value)} 
+      />
 
-      {/* <div className="flex">
-        {data.filter(i => i.C?.toLowerCase().includes(search?.toLowerCase()) || i.B?.toLowerCase().includes(search?.toLowerCase())).map((item) => (
-          <div key={item.A}>
-            <Image id={`${item.A}.jpeg`} />
-            <h3>{item.B} – {item.C}</h3>
-            {item.H && <div>{item.H}</div>}
-            <br />
-            <br />
-            <div>Цена: {item.D} ₽</div>
-          </div>
-        ))}
-      </div> */}
+      {!isLoading && filteredData.length === 0 && (
+        <p style={{ textAlign: 'center', marginTop: '40px' }}>
+          Ничего не найдено
+        </p>
+      )}
 
-      <section class="s-cards container">
-        <section class="s-cards__inner">
-          {data.filter(i => i.C?.toLowerCase().includes(search?.toLowerCase()) || i.B?.toLowerCase().includes(search?.toLowerCase())).map((item) => (
-            // <div key={item.A}>
-            //   <Image id={`${item.A}.jpeg`} />
-            //   <h3>{item.B} – {item.C}</h3>
-            //   {item.H && <div>{item.H}</div>}
-            //   <br />
-            //   <br />
-            //   <div>Цена: {item.D} ₽</div>
-            // </div>
-
-            <section class="s-card"  key={item.A}>
-              <Image id={`${item.A}.jpeg`} alt={`${item.B} – ${item.C}`} loading="lazy" /> 
-              <h3 class="s-card__name">{item.B} – {item.C}</h3>
-              <p class="s-card__price">Цена: {item.D} ₽</p>
-              <div class="s-card__btns">
+      <section className="s-cards container">
+        <section className="s-cards__inner">
+          {displayedData.map((item) => (
+            <section className="s-card" key={item.A}>
+              <Image id={`${item.A}.jpeg`} alt={`${item.B} – ${item.C}`} /> 
+              <h3 className="s-card__name">{item.B} – {item.C}</h3>
+              <p className="s-card__price">Цена: {item.D} ₽</p>
+              <div className="s-card__btns">
                 {/* <a href="./product.html" class="btn btn--clear-black">Подробнее</a> */}
                 {/* <button class="btn btn--fill">В корзину</button> */}
               </div>
             </section>
           ))}
         </section>
-        {/* <a class="btn btn--clear-black btn--fixed-width" href="./catalog.html">Показать ещё</a> */}
+        
+        {/* Элемент для отслеживания скролла */}
+        {hasMore && (
+          <div 
+            ref={loadMoreRef} 
+            style={{ 
+              textAlign: 'center', 
+              padding: '20px',
+              minHeight: '50px'
+            }}
+          >
+            <span>Загрузка...</span>
+          </div>
+        )}
 
+        {!hasMore && filteredData.length > 0 && (
+          <div style={{ 
+            textAlign: 'center', 
+            padding: '20px',
+            color: '#666'
+          }}>
+            Показано {filteredData.length} из {filteredData.length}
+          </div>
+        )}
       </section>
 
-      <a className="tg-btn" href="https://t.me/archive_vinyl" target="_blank" rel="noreferrer"><Image id="telegram.png" /></a>
+      <a className="tg-btn" href="https://t.me/archive_vinyl" target="_blank" rel="noreferrer">
+        <Image id="telegram.png" eager />
+      </a>
     </>
   );
 }
 
 const Main = () => {
   return (<>
-    <div className="logo"><Image id="logo.jpg" /></div>
+    <div className="logo"><Image id="logo.jpg" eager /></div>
     <div className="cards">
-      <a href="/catalog"><div className="card catalog"><Image id="icon-main.png" /></div>Каталог</a>
-      <a href="https://t.me/archive_vinylshop" target="_blank" rel="noreferrer"><div className="card tg"><Image id="icon-tg.png" /></div>Телеграмм</a>
-      <a href="https://instagram.com/archive_shop" target="_blank" rel="noreferrer"><div className="card inst"><Image id="icon-inst.png" /></div>Инстаграм</a>
-      <a href="https://www.youtube.com/@radiofromarchive"><div className="card yt"><Image id="icon-yt.png" /></div>Ютуб</a>
+      <a href="/catalog"><div className="card catalog"><Image id="icon-main.png" eager /></div>Каталог</a>
+      <a href="https://t.me/archive_vinylshop" target="_blank" rel="noreferrer"><div className="card tg"><Image id="icon-tg.png" eager /></div>Телеграмм</a>
+      <a href="https://instagram.com/archive_shop" target="_blank" rel="noreferrer"><div className="card inst"><Image id="icon-inst.png" eager /></div>Инстаграм</a>
+      <a href="https://www.youtube.com/@radiofromarchive"><div className="card yt"><Image id="icon-yt.png" eager /></div>Ютуб</a>
     </div>
   </>)
 }
