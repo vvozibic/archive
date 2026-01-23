@@ -56,12 +56,13 @@ const Image = ({ id, alt, className, eager = false, ...rest }) => {
       { rootMargin: '50px' } // Начинаем загрузку за 50px до появления в viewport
     );
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
+    const currentRef = imgRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (imgRef.current) {
+      if (currentRef) {
         observer.disconnect();
       }
     };
