@@ -61,7 +61,7 @@ async function getData() {
   // https://stackoverflow.com/questions/31765773/converting-google-visualization-query-result-into-javascript-array
   // https://developers.google.com/chart/interactive/docs/dev/implementing_data_source#responseformat
 
-  const spreadsheetId = "1cLQI_6IneVqz9f-JiBCPKImOSwP3gQp1I8gq4bWZZU8",
+  const spreadsheetId = "1rTv1YmAD-AQBgYYsOjOO2LxVkiHrpHrfjFRmBz5brZc",
     response = await fetch(
       `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json`
     ),
@@ -161,7 +161,7 @@ const Main = () => {
       <a href="/catalog"><div className="card catalog"><Image id="icon-main.png" /></div>Каталог</a>
       <a href="https://t.me/archive_vinylshop" target="_blank" rel="noreferrer"><div className="card tg"><Image id="icon-tg.png" /></div>Телеграмм</a>
       <a href="https://instagram.com/archive_shop" target="_blank" rel="noreferrer"><div className="card inst"><Image id="icon-inst.png" /></div>Инстаграм</a>
-      <a href=""><div className="card yt"><Image id="icon-yt.png" /></div>Ютуб</a>
+      <a href="https://www.youtube.com/@radiofromarchive"><div className="card yt"><Image id="icon-yt.png" /></div>Ютуб</a>
     </div>
   </>)
 }
