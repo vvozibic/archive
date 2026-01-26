@@ -1,4 +1,3 @@
-import { Analytics } from "@vercel/analytics/react";
 import { useEffect, useRef, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
@@ -286,7 +285,6 @@ export default function App () {
   return (
     <div className="App">
       <RouterProvider router={router} />
-      <Analytics />
     </div>
   )
 }
