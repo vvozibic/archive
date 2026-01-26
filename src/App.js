@@ -73,7 +73,7 @@ const Image = ({ id, alt, className, eager = false, ...rest }) => {
   if (error) return <span>{alt}</span>
 
   return (
-      <div ref={imgRef} style={{ minHeight: loading ? '200px' : 'auto' }}>
+      <div ref={imgRef} style={{ minHeight: loading ? '200px' : '200px' }}>
           {loading ? (
               <div style={{ 
                 width: '100%', 
