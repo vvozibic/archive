@@ -72,15 +72,15 @@ const Image = ({ id, alt, className, eager = false, ...rest }) => {
   if (error) return <span>{alt}</span>
 
   return (
-      <div ref={imgRef} style={{ minHeight: loading ? '200px' : '200px' }}>
+      <div ref={imgRef} style={{ minHeight: loading ? '240px' : '240px' }}>
           {loading ? (
               <div style={{ 
-                width: '100%', 
-                height: '200px', 
+                width: '240px', 
+                height: '240px', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center',
-                background: '#f0f0f0'
+                background: '#ffff'
               }}>
                 <span>Загрузка...</span>
               </div>
